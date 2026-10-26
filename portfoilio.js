@@ -1,33 +1,26 @@
-const menuToggle = document.querySelector('.menu-toggle');
-const siteNav = document.querySelector('.site-nav');
+const cursor = document.querySelector(".cursor");
+const hoverTargets = document.querySelectorAll("a, .project-card, .service-item, .button");
 
-menuToggle.addEventListener('click', () => {
-	const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-	menuToggle.setAttribute('aria-expanded', String(!isOpen));
-	menuToggle.setAttribute('aria-label', isOpen ? 'Open navigation' : 'Close navigation');
-	siteNav.classList.toggle('is-open', !isOpen);
-});
+if (cursor) {
+  window.addEventListener("pointermove", (event) => {
+    cursor.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
+  });
+}
 
-siteNav.addEventListener('click', (event) => {
-	if (event.target.closest('a')) {
-		menuToggle.setAttribute('aria-expanded', 'false');
-		menuToggle.setAttribute('aria-label', 'Open navigation');
-		siteNav.classList.remove('is-open');
-	}
-});
+hoverTargets.forEach((element) => {
+  element.addEventListener("mouseenter", () => {
+    if (cursor) {
+      cursor.style.width = "28px";
+      cursor.style.height = "28px";
+      cursor.style.background = "rgba(200, 180, 255, 0.8)";
+    }
+  });
 
-document.querySelector('#year').textContent = new Date().getFullYear();
-
-const revealObserver = new IntersectionObserver((entries, observer) => {
-	entries.forEach((entry) => {
-		if (entry.isIntersecting) {
-			entry.target.classList.add('is-visible');
-			observer.unobserve(entry.target);
-		}
-	});
-}, { threshold: 0.12 });
-
-document.querySelectorAll('.project, .about-content, .contact-row').forEach((element) => {
-	element.classList.add('reveal');
-	revealObserver.observe(element);
+  element.addEventListener("mouseleave", () => {
+    if (cursor) {
+      cursor.style.width = "18px";
+      cursor.style.height = "18px";
+      cursor.style.background = "rgba(255, 110, 168, 0.7)";
+    }
+  });
 });
